@@ -3,10 +3,11 @@
  */
 
 
-const {Poney} = require('./poney.js');
+const {Poney} = require('./poney');
 const BluebirdPromise = require('bluebird');
+const {Spiderman} = require('./spiderman');
 
-
+//import Spiderman from './spiderman'
 
 
 var instance = null;
@@ -14,13 +15,21 @@ class DeadPool {
     constructor() {
 
         this.energy = 100;
+        this.nuit = false;
 
         if (!instance) {
             instance = this;
         }
 
 
+        this.init();
 
+        return instance;
+
+    }
+
+    init() {
+        //this.spiderman = new Spiderman();
         this.Poney1 = new Poney();
         this.Poney2 = new Poney();
         this.Poney3 = new Poney();
@@ -31,22 +40,34 @@ class DeadPool {
         this.Poney8 = new Poney();
         this.Ranch =[this.Poney1,this.Poney2,this.Poney3,this.Poney4,this.Poney5,this.Poney6,this.Poney7,this.Poney8 ];
 
-        this.init();
 
-        return instance;
-
-    }
-
-    init() {
         this.intervalEnergy = setInterval(() => {
             this.energy -= 10;
-            if (this.energy < 50) {
-                this.SeRegenere();
+            if (this.nuit == false){
+                if (this.energy < 50) {
+                    this.SeRegenere();
 
+                }
+            }
+            else if (this.nuit == true){
+                if (this.energy < 75) {
+                    this.SeRegenere();
+
+                }
             }
             console.log(this.energy);
 
         }, 1000);
+        this.intervalNuit = setInterval(() => {
+            if ( this.nuit == false){
+                this.nuit = true;
+                console.log("nuit");
+            }
+            else if (this.nuit == true){
+                this.nuit = false;
+                console.log("jour");
+            }
+        }, 5000);
     }
 
     transformPoney() {

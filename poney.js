@@ -10,16 +10,29 @@ class Poney {
         this.energy = 0;
         this.isUnicorn = false;
         this.deadpool = new Deadpool();
+        this.nuit = false;
+        this.SpidermanUsed = false;
         this.initInterval();
     }
 
     initInterval() {
         this.intervalEnergy = setInterval(() => {
             this.energy += 15;
-            if (this.energy > 50) {
+            if (this.nuit == true){
+                this.energy += 15;
+            }
+            if (this.energy > 50 && this.SpidermanUsed == false) {
                 this.transformToUnicorn();
             }
         }, 1000);
+        this.intervalNuit = setInterval(() => {
+            if ( this.nuit == false){
+                this.nuit = true;
+            }
+            else if (this.nuit == true){
+                this.nuit = false;
+            }
+        }, 5000);
     }
 
     transformToUnicorn() {
@@ -98,6 +111,25 @@ class Poney {
             },1000)
         });
     }
+
+    joue(){
+        return new BluebirdPromise((resolve) => {
+            this.SpidermanUsed = true;
+            setTimeout(() => {
+                resolve();
+                this.energy -= 10;
+                this.SpidermanUsed = false;
+                if (this.isUnicorn == true){
+                    this.isUnicorne = false;
+                    console.log("Spiderman a fatigue une licorne");
+                }
+                else {
+                    console.log("Spiderman joue");
+                }
+            },1001)
+        });
+    }
 }
 
-export default Poney
+module.exports = {Poney};
+
